@@ -18,12 +18,6 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .navbar {
-            background-color: #0046ad;
-        }
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
         .btn-primary {
             background-color: #0046ad;
             border: none;
@@ -31,157 +25,15 @@
         .btn-primary:hover {
             background-color: #00337a;
         }
-        .appointment-section {
-            margin-top: 30px;
+        .navbar {
+            background-color: #0046ad;
         }
-        .appointment-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .appointment-list {
-            margin-top: 20px;
-        }
-        .appointment-item {
-            background-color: #f1f1f1;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-        .appointment-form {
-            display: none;
+        .navbar-brand, .nav-link {
+            color: white !important;
         }
     </style>
-    <script>
-        // Dummy Data for Departments and Doctors
-        const departments = {
-            "Pediatrics": ["Dr. Raymond W. Bunch", "Dr. Daniel A. Velez", "Dr. Kathleen M. Strohmeyer"],
-            "Cardiology": ["Dr. Scott S. Williams"],
-            "Orthopedics": ["Dr. Mary K. Allare", "Dr. Paul H. Allen"],
-            "Gastroenterology": ["Dr. Thomas L. Johnson", "Dr. Emily A. Garrison", "Dr. Joshua Carroll"],
-        };
-
-        const availableTimes = {
-            "Dr. Raymond W. Bunch": ["10:00 AM", "12:00 PM", "2:00 PM"],
-            "Dr. Daniel A. Velez": ["9:00 AM", "11:00 AM", "1:00 PM"],
-            "Dr. Kathleen M. Strohmeyer": ["8:00 AM", "10:00 AM", "12:00 PM"],
-            "Dr. Scott S. Williams": ["1:00 PM", "3:00 PM", "5:00 PM"],
-            "Dr. Mary K. Allare": ["9:00 AM", "11:00 AM", "1:00 PM"],
-            "Dr. Paul H. Allen": ["10:00 AM", "12:00 PM", "2:00 PM"],
-            "Dr. Thomas L. Johnson": ["10:00 AM", "2:00 PM", "4:00 PM"],
-            "Dr. Emily A. Garrison": ["9:00 AM", "1:00 PM", "3:00 PM"],
-            "Dr. Joshua Carroll": ["11:00 AM", "1:00 PM", "3:00 PM"],
-        };
-
-        let appointments = [];
-
-        function loadDepartments() {
-            const departmentSelect = document.getElementById('department');
-            for (const department in departments) {
-                const option = document.createElement('option');
-                option.value = department;
-                option.textContent = department;
-                departmentSelect.appendChild(option);
-            }
-        }
-
-        function loadDoctors() {
-            const departmentSelect = document.getElementById('department');
-            const doctorSelect = document.getElementById('doctor');
-            const selectedDepartment = departmentSelect.value;
-            doctorSelect.innerHTML = '<option value="">Select a Doctor</option>';
-            if (selectedDepartment) {
-                departments[selectedDepartment].forEach(doctor => {
-                    const option = document.createElement('option');
-                    option.value = doctor;
-                    option.textContent = doctor;
-                    doctorSelect.appendChild(option);
-                });
-            }
-        }
-
-        function loadAvailableTimes() {
-            const doctorSelect = document.getElementById('doctor');
-            const timeSelect = document.getElementById('time');
-            const selectedDoctor = doctorSelect.value;
-            timeSelect.innerHTML = '<option value="">Select a Time</option>';
-            if (selectedDoctor) {
-                availableTimes[selectedDoctor].forEach(time => {
-                    const option = document.createElement('option');
-                    option.value = time;
-                    option.textContent = time;
-                    timeSelect.appendChild(option);
-                });
-            }
-        }
-
-        function scheduleAppointment() {
-            const department = document.getElementById('department').value;
-            const doctor = document.getElementById('doctor').value;
-            const time = document.getElementById('time').value;
-            if (department && doctor && time) {
-                const appointment = { department, doctor, time };
-                appointments.push(appointment);
-                alert(`Appointment scheduled with Dr. ${doctor} in ${department} at ${time}`);
-                displayAppointments();
-                clearForm();
-            } else {
-                alert('Please select all fields to schedule an appointment.');
-            }
-        }
-
-        function rescheduleAppointment(index) {
-            const department = prompt("Enter new department", appointments[index].department);
-            const doctor = prompt("Enter new doctor", appointments[index].doctor);
-            const time = prompt("Enter new time", appointments[index].time);
-            if (department && doctor && time) {
-                appointments[index] = { department, doctor, time };
-                alert("Appointment rescheduled!");
-                displayAppointments();
-            } else {
-                alert('Please fill in all fields.');
-            }
-        }
-
-        function cancelAppointment(index) {
-            if (confirm("Are you sure you want to cancel this appointment?")) {
-                appointments.splice(index, 1);
-                alert('Appointment canceled!');
-                displayAppointments();
-            }
-        }
-
-        function displayAppointments() {
-            const appointmentList = document.getElementById('appointmentList');
-            appointmentList.innerHTML = '';
-            appointments.forEach((appointment, index) => {
-                const appointmentDiv = document.createElement('div');
-                appointmentDiv.classList.add('appointment-item');
-                appointmentDiv.innerHTML = `
-                    <p>Department: ${appointment.department}</p>
-                    <p>Doctor: ${appointment.doctor}</p>
-                    <p>Time: ${appointment.time}</p>
-                    <button class="btn btn-warning" onclick="rescheduleAppointment(${index})">Reschedule</button>
-                    <button class="btn btn-danger" onclick="cancelAppointment(${index})">Cancel</button>
-                `;
-                appointmentList.appendChild(appointmentDiv);
-            });
-        }
-
-        function clearForm() {
-            document.getElementById('department').value = '';
-            document.getElementById('doctor').value = '';
-            document.getElementById('time').value = '';
-        }
-
-        window.onload = function() {
-            loadDepartments();
-            displayAppointments();
-        };
-    </script>
 </head>
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Phoenix Children's Hospital</a>
@@ -194,46 +46,137 @@
                     <li class="nav-item"><a class="nav-link" href="departments.html">Departments</a></li>
                     <li class="nav-item"><a class="nav-link" href="billing.html">Billing</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="manageappointments.html">Manage Appointments</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Appointment Scheduling -->
     <div class="container">
-        <h2>Schedule Appointment</h2>
-        <form>
-            <div class="mb-3">
-                <label for="department" class="form-label">Select Department</label>
-                <select id="department" class="form-select" onchange="loadDoctors()">
-                    <option value="">Select Department</option>
-                    <!-- Departments will be loaded dynamically -->
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="doctor" class="form-label">Select Doctor</label>
-                <select id="doctor" class="form-select" onchange="loadAvailableTimes()">
-                    <option value="">Select a Doctor</option>
-                    <!-- Doctors will be loaded dynamically -->
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="time" class="form-label">Select Time</label>
-                <select id="time" class="form-select">
-                    <option value="">Select a Time</option>
-                    <!-- Available times will be loaded dynamically -->
-                </select>
-            </div>
-            <button type="button" class="btn btn-primary" onclick="scheduleAppointment()">Schedule Appointment</button>
-        </form>
+        <h2>Manage Appointments</h2>
+        
+        <!-- Schedule an Appointment -->
+        <div class="mt-4">
+            <h4>Schedule New Appointment</h4>
+            <form id="scheduleForm">
+                <div class="mb-3">
+                    <label for="department" class="form-label">Choose Department</label>
+                    <select id="department" class="form-select">
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="gastroenterology">Gastroenterology</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="doctor" class="form-label">Choose Doctor</label>
+                    <select id="doctor" class="form-select">
+                        <option value="drRaymondBunch">Dr. Raymond W. Bunch</option>
+                        <option value="drDanielVelez">Dr. Daniel A. Velez</option>
+                        <option value="drJoshuaCarroll">Dr. Joshua Carroll</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="time" class="form-label">Choose Appointment Time</label>
+                    <select id="time" class="form-select">
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm Appointment</button>
+            </form>
+        </div>
 
-        <!-- Appointment List -->
-        <div class="appointment-list mt-5">
-            <h3>Upcoming Appointments</h3>
-            <div id="appointmentList"></div>
+        <!-- Reschedule Appointment -->
+        <div class="mt-4">
+            <h4>Reschedule Appointment</h4>
+            <form id="rescheduleForm">
+                <div class="mb-3">
+                    <label for="rescheduleDepartment" class="form-label">Choose Department</label>
+                    <select id="rescheduleDepartment" class="form-select">
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="gastroenterology">Gastroenterology</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="rescheduleDoctor" class="form-label">Choose Doctor</label>
+                    <select id="rescheduleDoctor" class="form-select">
+                        <option value="drRaymondBunch">Dr. Raymond W. Bunch</option>
+                        <option value="drDanielVelez">Dr. Daniel A. Velez</option>
+                        <option value="drJoshuaCarroll">Dr. Joshua Carroll</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="rescheduleTime" class="form-label">Choose New Time</label>
+                    <select id="rescheduleTime" class="form-select">
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Reschedule Appointment</button>
+            </form>
+        </div>
+
+        <!-- Cancel Appointment -->
+        <div class="mt-4">
+            <h4>Cancel Appointment</h4>
+            <form id="cancelForm">
+                <div class="mb-3">
+                    <label for="cancelDepartment" class="form-label">Choose Department</label>
+                    <select id="cancelDepartment" class="form-select">
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="gastroenterology">Gastroenterology</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cancelDoctor" class="form-label">Choose Doctor</label>
+                    <select id="cancelDoctor" class="form-select">
+                        <option value="drRaymondBunch">Dr. Raymond W. Bunch</option>
+                        <option value="drDanielVelez">Dr. Daniel A. Velez</option>
+                        <option value="drJoshuaCarroll">Dr. Joshua Carroll</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cancelTime" class="form-label">Choose Time</label>
+                    <select id="cancelTime" class="form-select">
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-danger">Cancel Appointment</button>
+            </form>
         </div>
     </div>
 
+    <script>
+        // Handle scheduling new appointment
+        document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const department = document.getElementById('department').value;
+            const doctor = document.getElementById('doctor').value;
+            const time = document.getElementById('time').value;
+            alert(`Appointment Scheduled!\nDepartment: ${department}\nDoctor: ${doctor}\nTime: ${time}`);
+        });
+
+        // Handle rescheduling an appointment
+        document.getElementById('rescheduleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const department = document.getElementById('rescheduleDepartment').value;
+            const doctor = document.getElementById('rescheduleDoctor').value;
+            const time = document.getElementById('rescheduleTime').value;
+            alert(`Appointment Rescheduled!\nDepartment: ${department}\nDoctor: ${doctor}\nNew Time: ${time}`);
+        });
+
+        // Handle canceling an appointment
+        document.getElementById('cancelForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const department = document.getElementById('cancelDepartment').value;
+            const doctor = document.getElementById('cancelDoctor').value;
+            const time = document.getElementById('cancelTime').value;
+            alert(`Appointment Canceled!\nDepartment: ${department}\nDoctor: ${doctor}\nTime: ${time}`);
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
