@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Phoenix Children's Hospital</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -21,23 +20,20 @@
             color: white !important;
             font-weight: 600;
         }
-        .department-list {
-            margin-top: 2rem;
+        .nav-link {
+            color: white !important;
         }
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .header-content {
+            text-align: center;
+            padding: 4rem 2rem;
         }
-        .billing-section {
-            margin-top: 2rem;
-        }
-        .appointment-section {
-            margin-top: 2rem;
-        }
-        .card-title {
+        .header-content h1 {
             color: #0046ad;
-            font-weight: 600;
+            font-weight: 700;
+        }
+        .header-content p {
+            font-size: 1.2rem;
+            color: #555;
         }
         .btn-primary {
             background-color: #0046ad;
@@ -52,194 +48,71 @@
             padding: 1rem 0;
             text-align: center;
         }
-        h1, h2 {
+        .department-section {
+            padding: 3rem 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        .department-section h2 {
             color: #0046ad;
-            font-weight: 600;
-        }
-        p {
-            color: #555;
-        }
-        #login-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-        }
-        .login-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-    <div id="login-page">
-        <form class="login-form" id="loginForm">
-            <h2 class="text-center">Login</h2>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Phoenix Children's Hospital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#departments">Departments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="billing.html">Billing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="surgery-tracker.html">Surgery Tracker</a></li>
+                </ul>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header id="home" class="header-content">
+        <h1>Welcome to Phoenix Children's Hospital</h1>
+        <p>Providing world-class pediatric care with compassion and innovation.</p>
+        <p>At Phoenix Children's Hospital, we are committed to ensuring the best medical care for your children. Our specialized departments, expert doctors, and advanced facilities ensure quality healthcare tailored to each child's needs.</p>
+    </header>
+
+    <!-- Surgery Tracker -->
+    <div class="container mt-5 text-center">
+        <h2>Surgery Tracking</h2>
+        <p>Enter your child's surgery tracking number to see the status.</p>
+        <input type="text" id="trackingNumber" class="form-control w-50 mx-auto" placeholder="Enter tracking number">
+        <br>
+        <a href="surgery-tracker.html" class="btn btn-primary">Track Surgery</a>
     </div>
 
-    <div id="main-content" style="display: none;">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Phoenix Children's Hospital</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#departments">Departments</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#wait-times">Wait Times</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#surgery-tracker">Surgery Tracker</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Header -->
-        <header class="text-center p-4">
-            <h1>Welcome to Phoenix Children's Hospital</h1>
-            <p>Your trusted partner in pediatric care.</p>
-        </header>
-
-        <!-- Departments Section -->
-        <div id="departments" class="container department-list">
-            <h2 class="text-center">Our Departments</h2>
-            <p class="text-center">Click on a department to learn more.</p>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Cardiology (Main Campus)</h5>
-                            <p class="card-text">Providing specialized care for pediatric heart conditions.</p>
-                            <a href="cardiology.html" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Neurology (East Valley)</h5>
-                            <p class="card-text">Expert care for neurological disorders and treatments.</p>
-                            <a href="neurology.html" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Oncology (West Valley)</h5>
-                            <p class="card-text">Comprehensive cancer care and support for children.</p>
-                            <a href="oncology.html" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Wait Times Section -->
-        <div id="wait-times" class="container mt-5">
-            <h2 class="text-center">Check Wait Times</h2>
-            <p class="text-center">Get real-time updates on service wait times.</p>
-            <table class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th scope="col">Service</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Estimated Wait Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Emergency Room</td>
-                        <td>Main Campus</td>
-                        <td>30 minutes</td>
-                    </tr>
-                    <tr>
-                        <td>Specialist Consultation</td>
-                        <td>East Valley</td>
-                        <td>15 minutes</td>
-                    </tr>
-                    <tr>
-                        <td>Imaging Services</td>
-                        <td>West Valley</td>
-                        <td>20 minutes</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Surgery Progress Tracker -->
-        <div class="container mt-5 text-center">
-            <h2>Surgery Tracking</h2>
-            <p>Enter your child's surgery tracking number to see the status.</p>
-            <input type="text" id="trackingNumber" class="form-control w-50 mx-auto" placeholder="Enter tracking number">
-            <br>
-            <a href="surgery-tracker.html" class="btn btn-primary">Track Surgery</a>
-        </div>    
-
-        <!-- Contact Section -->
-        <div id="contact" class="container mt-5">
-            <h2 class="text-center">Contact Us</h2>
-            <p class="text-center">Have questions? Get in touch with us.</p>
-            <form class="mt-3">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter your name">
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
-                </div>
-                <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" rows="3" placeholder="Enter your message"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
-        </div>
-
-        <!-- Footer -->
-        <footer class="footer mt-5">
-            <p>&copy; 2025 Phoenix Children's Hospital. All rights reserved.</p>
-        </footer>
+    <!-- Departments -->
+    <div id="departments" class="container mt-5 department-section">
+        <h2>Departments</h2>
+        <ul>
+            <li><a href="oncology.html">Oncology</a></li>
+            <li><a href="cardiology.html">Cardiology</a></li>
+            <li><a href="neurology.html">Neurology</a></li>
+            <li><a href="orthopedics.html">Orthopedics</a></li>
+        </ul>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const mainContent = document.getElementById('main-content');
-        const loginPage = document.getElementById('login-page');
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <p>&copy; 2025 Phoenix Children's Hospital. All rights reserved.</p>
+    </footer>
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (username === 'parent' && password === 'PHXparent') {
-                loginPage.style.display = 'none';
-                mainContent.style.display = 'block';
-            } else {
-                alert('Invalid credentials. Please try again.');
-            }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

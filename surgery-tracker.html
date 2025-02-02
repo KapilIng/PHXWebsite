@@ -5,55 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surgery Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f4f4f9;
             color: #333;
         }
-        .container {
+        .tracker-container {
             max-width: 600px;
             margin: 50px auto;
-            background: white;
             padding: 20px;
+            background: white;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        h2 {
-            color: #0046ad;
-            font-weight: 700;
+        .progress {
+            height: 30px;
+            font-size: 16px;
         }
-        .status {
-            font-size: 1.2rem;
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .in-progress {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        .failed {
-            background-color: #f8d7da;
-            color: #721c24;
+        .status-message {
+            margin-top: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Surgery Tracking Status</h2>
-        <p>Your child's surgery tracking number: <strong>12345ABC</strong></p>
-        
-        <div class="status in-progress">Surgery in Progress</div>
-        
-        <p>Last updated: <span id="lastUpdated">Just now</span></p>
-        <a href="index.html" class="btn btn-primary">Back to Home</a>
+    <div class="tracker-container">
+        <h2>Surgery Progress</h2>
+        <p>Tracking Number: <strong id="trackingNumberDisplay">123456</strong></p>
+        <div class="progress">
+            <div id="progressBar" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%">0%</div>
+        </div>
+        <p class="status-message" id="statusMessage">Checking status...</p>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let progressStages = [
+                { percentage: 25, message: "Patient in Pre-Op" },
+                { percentage: 50, message: "Surgery in Progress" },
+                { percentage: 75, message: "Surgery Almost Complete" },
+                { percentage: 100, message: "Surgery Successful!" }
+            ];
+            
+            let progressIndex = 0;
+            function updateProgress() {
+                if (progressIndex < progressStages.length) {
+                    let stage = progressStages[progressIndex];
+                    document.getElementById("progressBar").style.width = stage.percentage + "%";
+                    document.getElementById("progressBar").textContent = stage.percentage + "%";
+                    document.getElementById("statusMessage").textContent = stage.message;
+                    progressIndex++;
+                    setTimeout(updateProgress, 2000);
+                }
+            }
+            updateProgress();
+        });
+    </script>
 </body>
 </html>
