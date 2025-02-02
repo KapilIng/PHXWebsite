@@ -26,6 +26,16 @@
             background-color: #00337a;
         }
     </style>
+    <script>
+        function showAmountDue() {
+            var billingId = document.getElementById('billingId').value;
+            if (billingId === '123456') {
+                document.getElementById('amountDue').innerText = 'Amount Due: $128.65';
+            } else {
+                document.getElementById('amountDue').innerText = 'Invalid Billing ID';
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container text-center">
