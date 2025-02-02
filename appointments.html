@@ -266,6 +266,7 @@
             <button class="btn btn-primary" onclick="confirmReschedule(${index})">Confirm Reschedule</button>
             <button class="btn btn-secondary" onclick="cancelReschedule()">Cancel</button>
         `;
+        rescheduleForm.classList.add('appointment-form');
         document.body.appendChild(rescheduleForm);
     }
 
@@ -315,7 +316,7 @@
     }
 
     function cancelReschedule() {
-        const rescheduleForm = document.querySelector('body > div');
+        const rescheduleForm = document.querySelector('.appointment-form');
         if (rescheduleForm) {
             rescheduleForm.remove();
         }
