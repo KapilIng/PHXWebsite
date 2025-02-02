@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Appointments - Phoenix Children's Hospital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            margin-top: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar {
+            background-color: #0046ad;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .btn-primary {
+            background-color: #0046ad;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #00337a;
+        }
+        .appointment-section {
+            margin-top: 30px;
+        }
+        .appointment-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .appointment-list {
+            margin-top: 20px;
+        }
+        .appointment-item {
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        // Dummy Data for Current Appointments and Available Times
+        const currentAppointments = [
+            { id: 1, date: "2025-02-15", time: "10:00 AM", department: "Pediatrics" },
+            { id: 2, date: "2025-02-20", time: "1:00 PM", department: "Pediatrics" }
+        ];
+
+        const availableTimes = [
+            "10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM"
+        ];
+
+        function showCurrentAppointments() {
+            const appointmentList = document.getElementById('appointmentList');
+            appointmentList.innerHTML = '';
+            currentAppointments.forEach(app => {
+                const item = document.createElement('div');
+                item.classList.add('appointment-item');
+                item.innerHTML = `${app.date} at ${app.time} - ${app.department} <button class="btn btn-danger btn-sm float-end" onclick="cancelAppointment(${app.id})">Cancel</button>`;
+                appointmentList.appendChild(item);
+            });
+        }
+
+        function scheduleAppointment() {
+            const date = document.getElementById('appointmentDate').value;
+            const time = document.getElementById('appointmentTime').value;
+            const department = "Pediatrics"; // Hardcoded to Pediatrics for now
+
+            const newAppointment = { id: currentAppointments.length + 1, date, time, department };
+            currentAppointments.push(newAppointment);
+            showCurrentAppointments();
+            alert(`Appointment scheduled for ${date} at ${time} in ${department}`);
+        }
+
+        function cancelAppointment(id) {
+            const index = currentAppointments.findIndex(app => app.id === id);
+            if (index !== -1) {
+                currentAppointments.splice(index, 1);
+                showCurrentAppointments();
+                alert("Appointment canceled successfully");
+            }
+        }
+
+        function loadAvailableTimes() {
+            const timeSelect = document.getElementById('appointmentTime');
+            availableTimes.forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                timeSelect.appendChild(option);
+            });
+        }
+
+        window.onload = function() {
+            showCurrentAppointments();
+            loadAvailableTimes();
+        };
+    </script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Phoenix Children's Hospital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="departments.html">Departments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="billing.html">Billing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="appointments.html">Manage Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Manage Appointments Section -->
+    <div class="container appointment-section">
+        <h2>Manage Your Appointments</h2>
+
+        <!-- Current Appointments -->
+        <div class="appointment-container">
+            <h3>Current Appointments</h3>
+            <div id="appointmentList" class="appointment-list"></div>
+        </div>
+
+        <!-- Schedule New Appointment -->
+        <div class="appointment-container mt-4">
+            <h3>Schedule New Appointment</h3>
+            <form>
+                <label for="appointmentDate" class="form-label">Choose a Date</label>
+                <input type="date" id="appointmentDate" class="form-control mb-3">
+
+                <label for="appointmentTime" class="form-label">Choose a Time</label>
+                <select id="appointmentTime" class="form-control mb-3"></select>
+
+                <button type="button" class="btn btn-primary" onclick="scheduleAppointment()">Confirm Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
