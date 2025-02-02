@@ -3,45 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Surgery Tracking</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Doctor's Interface</title>
     <style>
+        /* Basic Styling */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
+
         .container {
-            margin-top: 50px;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .status-btn {
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        input {
             width: 100%;
-            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Progress Bar */
+        #progressContainer {
+            width: 100%;
+            background-color: #e0e0e0;
+            margin-top: 20px;
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center">Surgery Tracking</h2>
-        <p class="text-center">Update the patient's surgery status.</p>
-        <div class="card p-4">
-            <h4>Patient Surgery Status</h4>
-            <button class="btn btn-primary status-btn" onclick="updateStatus('Pre-Op')">Pre-Op</button>
-            <button class="btn btn-warning status-btn" onclick="updateStatus('In Surgery')">In Surgery</button>
-            <button class="btn btn-success status-btn" onclick="updateStatus('Recovery')">Recovery</button>
-            <button class="btn btn-danger status-btn" onclick="updateStatus('Surgery Complete')">Surgery Complete</button>
+        <h1>Doctor's Surgery Progress Update</h1>
+        
+        <!-- Surgery Progress Form -->
+        <div class="form-group">
+            <label for="progressInput">Enter Surgery Progress (%)</label>
+            <input type="number" id="progressInput" min="0" max="100" placeholder="Enter progress (0-100)">
         </div>
+
+        <button id="updateProgressBtn">Update Surgery Progress</button>
+
+        <!-- Progress Bar Display -->
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+        </div>
+
     </div>
 
     <script>
-        function updateStatus(status) {
-            fetch('update_status.php', {
+        // Elements from the document
+        let progressInput = document.getElementById('progressInput');
+        let updateProgressBtn = document.getElementById('updateProgressBtn');
+        let progressBar = document.getElementById('progressBar');
+
+        // Function to update progress on the progress bar and backend
+        updateProgressBtn.addEventListener('click', function() {
+            let newProgress = progressInput.value;
+
+            // Validate the input
+            if (newProgress >= 0 && newProgress <= 100) {
+                // Update the progress bar
+                progressBar.style.width = newProgress + "%";
+                
+                // Update the backend and patient dashboard
+                updatePatientDashboard(newProgress);
+            } else {
+                alert("Please enter a valid percentage between 0 and 100.");
+            }
+        });
+
+        // Function to send progress data to the patient dashboard (server-side)
+        function updatePatientDashboard(progress) {
+            // Example of a POST request to the server (adjust endpoint as needed)
+            fetch('/update-surgery-progress', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ trackingId: 'SURG12345', status: status })
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ progress: progress })
             })
             .then(response => response.json())
-            .then(data => alert('Status updated to: ' + status))
-            .catch(error => console.error('Error:', error));
+            .then(data => {
+                console.log("Surgery progress updated on patient dashboard:", data);
+                // You could also display a success message here
+            })
+            .catch(error => {
+                console.error("Error updating patient dashboard:", error);
+            });
         }
     </script>
 </body>
