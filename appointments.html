@@ -52,92 +52,83 @@
         }
     </style>
     <script>
-        // Dummy Data for Current Appointments and Available Times
-        const currentAppointments = [
-            { id: 1, date: "2025-02-15", time: "10:00 AM", department: "Pediatrics" },
-            { id: 2, date: "2025-02-20", time: "1:00 PM", department: "Pediatrics" }
-        ];
+        // Dummy Data for Departments and Doctors
+        const departments = {
+            "Pediatrics": ["Dr. Raymond W. Bunch", "Dr. Daniel A. Velez", "Dr. Kathleen M. Strohmeyer"],
+            "Cardiology": ["Dr. Scott S. Williams"],
+            "Orthopedics": ["Dr. Mary K. Allare", "Dr. Paul H. Allen"],
+            "Gastroenterology": ["Dr. Thomas L. Johnson", "Dr. Emily A. Garrison", "Dr. Joshua Carroll"],
+            // Add more departments and doctors as needed
+        };
 
-        const availableTimes = [
-            "10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM"
-        ];
-
-        const departments = [
-            "Pediatrics", "Orthopedics", "Cardiology", "Neurology"
-        ];
-
-        function showCurrentAppointments() {
-            const appointmentList = document.getElementById('appointmentList');
-            appointmentList.innerHTML = '';
-            currentAppointments.forEach(app => {
-                const item = document.createElement('div');
-                item.classList.add('appointment-item');
-                item.innerHTML = `${app.date} at ${app.time} - ${app.department} 
-                <button class="btn btn-warning btn-sm float-end" onclick="showRescheduleForm(${app.id})">Reschedule</button>
-                <button class="btn btn-danger btn-sm float-end me-2" onclick="cancelAppointment(${app.id})">Cancel</button>`;
-                appointmentList.appendChild(item);
-            });
-        }
-
-        function showRescheduleForm(id) {
-            const appointment = currentAppointments.find(app => app.id === id);
-            if (appointment) {
-                document.getElementById('rescheduleForm').style.display = 'block';
-                document.getElementById('appointmentIdToReschedule').value = appointment.id;
-                document.getElementById('rescheduleDate').value = appointment.date;
-                document.getElementById('rescheduleTime').value = appointment.time;
-                document.getElementById('rescheduleDepartment').value = appointment.department;
-            }
-        }
-
-        function rescheduleAppointment() {
-            const id = document.getElementById('appointmentIdToReschedule').value;
-            const date = document.getElementById('rescheduleDate').value;
-            const time = document.getElementById('rescheduleTime').value;
-            const department = document.getElementById('rescheduleDepartment').value;
-
-            const appointmentIndex = currentAppointments.findIndex(app => app.id === parseInt(id));
-            if (appointmentIndex !== -1) {
-                currentAppointments[appointmentIndex] = { id: parseInt(id), date, time, department };
-                showCurrentAppointments();
-                alert(`Appointment rescheduled to ${date} at ${time} in ${department}`);
-                document.getElementById('rescheduleForm').reset();
-                document.getElementById('rescheduleForm').style.display = 'none';
-            }
-        }
-
-        function cancelAppointment(id) {
-            const index = currentAppointments.findIndex(app => app.id === id);
-            if (index !== -1) {
-                currentAppointments.splice(index, 1);
-                showCurrentAppointments();
-                alert("Appointment canceled successfully");
-            }
-        }
-
-        function loadAvailableTimes() {
-            const timeSelect = document.getElementById('rescheduleTime');
-            availableTimes.forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.textContent = time;
-                timeSelect.appendChild(option);
-            });
-        }
+        const availableTimes = {
+            "Dr. Raymond W. Bunch": ["10:00 AM", "12:00 PM", "2:00 PM"],
+            "Dr. Daniel A. Velez": ["9:00 AM", "11:00 AM", "1:00 PM"],
+            "Dr. Kathleen M. Strohmeyer": ["8:00 AM", "10:00 AM", "12:00 PM"],
+            "Dr. Scott S. Williams": ["1:00 PM", "3:00 PM", "5:00 PM"],
+            "Dr. Mary K. Allare": ["9:00 AM", "11:00 AM", "1:00 PM"],
+            "Dr. Paul H. Allen": ["10:00 AM", "12:00 PM", "2:00 PM"],
+            "Dr. Thomas L. Johnson": ["10:00 AM", "2:00 PM", "4:00 PM"],
+            "Dr. Emily A. Garrison": ["9:00 AM", "1:00 PM", "3:00 PM"],
+            "Dr. Joshua Carroll": ["11:00 AM", "1:00 PM", "3:00 PM"],
+            // Add more doctors and their available times as needed
+        };
 
         function loadDepartments() {
-            const departmentSelect = document.getElementById('rescheduleDepartment');
-            departments.forEach(department => {
+            const departmentSelect = document.getElementById('department');
+            for (const department in departments) {
                 const option = document.createElement('option');
                 option.value = department;
                 option.textContent = department;
                 departmentSelect.appendChild(option);
-            });
+            }
+        }
+
+        function loadDoctors() {
+            const departmentSelect = document.getElementById('department');
+            const doctorSelect = document.getElementById('doctor');
+            const selectedDepartment = departmentSelect.value;
+            doctorSelect.innerHTML = '<option value="">Select a Doctor</option>'; // Reset doctor options
+            if (selectedDepartment) {
+                departments[selectedDepartment].forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor;
+                    option.textContent = doctor;
+                    doctorSelect.appendChild(option);
+                });
+            }
+        }
+
+        function loadAvailableTimes() {
+            const doctorSelect = document.getElementById('doctor');
+            const timeSelect = document.getElementById('time');
+            const selectedDoctor = doctorSelect.value;
+            timeSelect.innerHTML = '<option value="">Select a Time</option>'; // Reset time options
+            if (selectedDoctor) {
+                availableTimes[selectedDoctor].forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    timeSelect.appendChild(option);
+                });
+            }
+        }
+
+        function scheduleAppointment() {
+            const department = document.getElementById('department').value;
+            const doctor = document.getElementById('doctor').value;
+            const time = document.getElementById('time').value;
+            if (department && doctor && time) {
+                alert(`Appointment scheduled with Dr. ${doctor} in ${department} at ${time}`);
+                // Add the appointment to the upcoming appointments list
+                // For demonstration purposes, we'll just log it to the console
+                console.log(`Scheduled Appointment: ${department} - Dr. ${doctor} at ${time}`);
+            } else {
+                alert('Please select all fields to schedule an appointment.');
+            }
         }
 
         window.onload = function() {
-            showCurrentAppointments();
-            loadAvailableTimes();
             loadDepartments();
         };
     </script>
@@ -157,44 +148,40 @@
                     <li class="nav-item"><a class="nav-link" href="departments.html">Departments</a></li>
                     <li class="nav-item"><a class="nav-link" href="billing.html">Billing</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="appointments.html">Manage Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="manageappointments.html">Manage Appointments</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Manage Appointments Section -->
-    <div class="container appointment-section">
-        <h2>Manage Your Appointments</h2>
-
-        <!-- Current Appointments -->
-        <div class="appointment-container">
-            <h3>Current Appointments</h3>
-            <div id="appointmentList" class="appointment-list"></div>
-        </div>
-
-        <!-- Reschedule Appointment Form -->
-        <div id="rescheduleForm" class="appointment-container appointment-form mt-4">
-            <h3>Reschedule Appointment</h3>
-            <form>
-                <input type="hidden" id="appointmentIdToReschedule">
-                
-                <label for="rescheduleDate" class="form-label">Choose a New Date</label>
-                <input type="date" id="rescheduleDate" class="form-control mb-3">
-
-                <label for="rescheduleTime" class="form-label">Choose a New Time</label>
-                <select id="rescheduleTime" class="form-control mb-3"></select>
-
-                <label for="rescheduleDepartment" class="form-label">Choose a New Department</label>
-                <select id="rescheduleDepartment" class="form-control mb-3"></select>
-
-                <button type="button" class="btn btn-primary" onclick="rescheduleAppointment()">Confirm Reschedule</button>
-            </form>
-        </div>
-
+    <!-- Appointment Scheduling -->
+    <div class="container">
+        <h2>Schedule Appointment</h2>
+        <form>
+            <div class="mb-3">
+                <label for="department" class="form-label">Select Department</label>
+                <select id="department" class="form-select" onchange="loadDoctors()">
+                    <option value="">Select Department</option>
+                    <!-- Departments will be loaded dynamically -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="doctor" class="form-label">Select Doctor</label>
+                <select id="doctor" class="form-select" onchange="loadAvailableTimes()">
+                    <option value="">Select a Doctor</option>
+                    <!-- Doctors will be loaded dynamically -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="time" class="form-label">Select Time</label>
+                <select id="time" class="form-select">
+                    <option value="">Select a Time</option>
+                    <!-- Available times will be loaded dynamically -->
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="scheduleAppointment()">Schedule Appointment</button>
+        </form>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
