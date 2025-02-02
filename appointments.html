@@ -25,11 +25,22 @@
         .btn-primary:hover {
             background-color: #00337a;
         }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
         .navbar {
             background-color: #0046ad;
         }
         .navbar-brand, .nav-link {
             color: white !important;
+        }
+        .appointment-actions {
+            display: flex;
+            gap: 10px;
         }
     </style>
 </head>
@@ -58,8 +69,18 @@
         <!-- Current Appointments Section -->
         <h4>Upcoming Appointments</h4>
         <ul class="list-group mb-4">
-            <li class="list-group-item">Pediatrics - Dr. Raymond W. Bunch - 09:00 AM - <button class="btn btn-danger btn-sm" onclick="cancelAppointment()">Cancel</button></li>
-            <li class="list-group-item">Pediatrics - Dr. Daniel A. Velez - 10:00 AM - <button class="btn btn-danger btn-sm" onclick="cancelAppointment()">Cancel</button></li>
+            <li class="list-group-item">Pediatrics - Dr. Raymond W. Bunch - 09:00 AM 
+                <div class="appointment-actions">
+                    <button class="btn btn-danger btn-sm" onclick="cancelAppointment()">Cancel</button>
+                    <button class="btn btn-primary btn-sm" onclick="showRescheduleForm()">Reschedule</button>
+                </div>
+            </li>
+            <li class="list-group-item">Pediatrics - Dr. Daniel A. Velez - 10:00 AM 
+                <div class="appointment-actions">
+                    <button class="btn btn-danger btn-sm" onclick="cancelAppointment()">Cancel</button>
+                    <button class="btn btn-primary btn-sm" onclick="showRescheduleForm()">Reschedule</button>
+                </div>
+            </li>
         </ul>
 
         <!-- Schedule Appointment Section -->
@@ -92,7 +113,7 @@
         </form>
 
         <!-- Reschedule Appointment Section -->
-        <div class="mt-4">
+        <div id="rescheduleSection" class="mt-4" style="display:none;">
             <h4>Reschedule Appointment</h4>
             <form id="rescheduleForm">
                 <div class="mb-3">
@@ -127,6 +148,11 @@
                 alert('Appointment has been canceled.');
             }
 
+            // Show the reschedule form
+            function showRescheduleForm() {
+                document.getElementById('rescheduleSection').style.display = 'block';
+            }
+
             // Handle scheduling form submission
             document.getElementById('scheduleForm').addEventListener('submit', function(event) {
                 event.preventDefault();
@@ -137,6 +163,7 @@
             document.getElementById('rescheduleForm').addEventListener('submit', function(event) {
                 event.preventDefault();
                 alert('Appointment Rescheduled Successfully!');
+                document.getElementById('rescheduleSection').style.display = 'none';
             });
         </script>
 
