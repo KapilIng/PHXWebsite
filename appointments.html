@@ -236,4 +236,90 @@
     </div>
 
 </body>
+
+<script>
+    function rescheduleAppointment(index) {
+        const appointment = appointments[index];
+        const rescheduleForm = document.createElement('div');
+        rescheduleForm.innerHTML = `
+            <div class="mb-3">
+                <label for="rescheduleDepartment" class="form-label">Select Department</label>
+                <select id="rescheduleDepartment" class="form-select" onchange="loadRescheduleDoctors(${index})">
+                    <option value="">Select Department</option>
+                    ${Object.keys(departments).map(department => `<option value="${department}" ${department === appointment.department ? 'selected' : ''}>${department}</option>`).join('')}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="rescheduleDoctor" class="form-label">Select Doctor</label>
+                <select id="rescheduleDoctor" class="form-select" onchange="loadRescheduleTimes(${index})">
+                    <option value="">Select a Doctor</option>
+                    ${departments[appointment.department].map(doctor => `<option value="${doctor}" ${doctor === appointment.doctor ? 'selected' : ''}>${doctor}</option>`).join('')}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="rescheduleTime" class="form-label">Select Time</label>
+                <select id="rescheduleTime" class="form-select">
+                    <option value="">Select a Time</option>
+                    ${availableTimes[appointment.doctor].map(time => `<option value="${time}" ${time === appointment.time ? 'selected' : ''}>${time}</option>`).join('')}
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="confirmReschedule(${index})">Confirm Reschedule</button>
+            <button class="btn btn-secondary" onclick="cancelReschedule()">Cancel</button>
+        `;
+        document.body.appendChild(rescheduleForm);
+    }
+
+    function loadRescheduleDoctors(index) {
+        const departmentSelect = document.getElementById('rescheduleDepartment');
+        const doctorSelect = document.getElementById('rescheduleDoctor');
+        const selectedDepartment = departmentSelect.value;
+        doctorSelect.innerHTML = '<option value="">Select a Doctor</option>';
+        if (selectedDepartment) {
+            departments[selectedDepartment].forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = doctor;
+                option.textContent = doctor;
+                doctorSelect.appendChild(option);
+            });
+        }
+        loadRescheduleTimes(index);
+    }
+
+    function loadRescheduleTimes(index) {
+        const doctorSelect = document.getElementById('rescheduleDoctor');
+        const timeSelect = document.getElementById('rescheduleTime');
+        const selectedDoctor = doctorSelect.value;
+        timeSelect.innerHTML = '<option value="">Select a Time</option>';
+        if (selectedDoctor) {
+            availableTimes[selectedDoctor].forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                timeSelect.appendChild(option);
+            });
+        }
+    }
+
+    function confirmReschedule(index) {
+        const department = document.getElementById('rescheduleDepartment').value;
+        const doctor = document.getElementById('rescheduleDoctor').value;
+        const time = document.getElementById('rescheduleTime').value;
+        if (department && doctor && time) {
+            appointments[index] = { department, doctor, time };
+            alert("Appointment rescheduled!");
+            displayAppointments();
+            cancelReschedule();
+        } else {
+            alert('Please select all fields to reschedule the appointment.');
+        }
+    }
+
+    function cancelReschedule() {
+        const rescheduleForm = document.querySelector('body > div');
+        if (rescheduleForm) {
+            rescheduleForm.remove();
+        }
+    }
+</script>
+
 </html>
