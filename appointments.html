@@ -59,6 +59,10 @@
             "10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM"
         ];
 
+        const departments = [
+            "Pediatrics", "Orthopedics", "Cardiology", "Neurology"
+        ];
+
         function showCurrentAppointments() {
             const appointmentList = document.getElementById('appointmentList');
             appointmentList.innerHTML = '';
@@ -73,7 +77,7 @@
         function scheduleAppointment() {
             const date = document.getElementById('appointmentDate').value;
             const time = document.getElementById('appointmentTime').value;
-            const department = "Pediatrics"; // Hardcoded to Pediatrics for now
+            const department = document.getElementById('appointmentDepartment').value;
 
             const newAppointment = { id: currentAppointments.length + 1, date, time, department };
             currentAppointments.push(newAppointment);
@@ -100,9 +104,20 @@
             });
         }
 
+        function loadDepartments() {
+            const departmentSelect = document.getElementById('appointmentDepartment');
+            departments.forEach(department => {
+                const option = document.createElement('option');
+                option.value = department;
+                option.textContent = department;
+                departmentSelect.appendChild(option);
+            });
+        }
+
         window.onload = function() {
             showCurrentAppointments();
             loadAvailableTimes();
+            loadDepartments();
         };
     </script>
 </head>
@@ -120,8 +135,8 @@
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="departments.html">Departments</a></li>
                     <li class="nav-item"><a class="nav-link" href="billing.html">Billing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="appointments.html">Manage Appointments</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="appointments.html">Manage Appointments</a></li>
                 </ul>
             </div>
         </div>
@@ -146,6 +161,9 @@
 
                 <label for="appointmentTime" class="form-label">Choose a Time</label>
                 <select id="appointmentTime" class="form-control mb-3"></select>
+
+                <label for="appointmentDepartment" class="form-label">Choose a Department</label>
+                <select id="appointmentDepartment" class="form-control mb-3"></select>
 
                 <button type="button" class="btn btn-primary" onclick="scheduleAppointment()">Confirm Appointment</button>
             </form>
