@@ -47,6 +47,9 @@
             margin: 5px 0;
             border-radius: 5px;
         }
+        .appointment-form {
+            display: none;
+        }
     </style>
     <script>
         // Dummy Data for Current Appointments and Available Times
@@ -69,20 +72,38 @@
             currentAppointments.forEach(app => {
                 const item = document.createElement('div');
                 item.classList.add('appointment-item');
-                item.innerHTML = `${app.date} at ${app.time} - ${app.department} <button class="btn btn-danger btn-sm float-end" onclick="cancelAppointment(${app.id})">Cancel</button>`;
+                item.innerHTML = `${app.date} at ${app.time} - ${app.department} 
+                <button class="btn btn-warning btn-sm float-end" onclick="showRescheduleForm(${app.id})">Reschedule</button>
+                <button class="btn btn-danger btn-sm float-end me-2" onclick="cancelAppointment(${app.id})">Cancel</button>`;
                 appointmentList.appendChild(item);
             });
         }
 
-        function scheduleAppointment() {
-            const date = document.getElementById('appointmentDate').value;
-            const time = document.getElementById('appointmentTime').value;
-            const department = document.getElementById('appointmentDepartment').value;
+        function showRescheduleForm(id) {
+            const appointment = currentAppointments.find(app => app.id === id);
+            if (appointment) {
+                document.getElementById('rescheduleForm').style.display = 'block';
+                document.getElementById('appointmentIdToReschedule').value = appointment.id;
+                document.getElementById('rescheduleDate').value = appointment.date;
+                document.getElementById('rescheduleTime').value = appointment.time;
+                document.getElementById('rescheduleDepartment').value = appointment.department;
+            }
+        }
 
-            const newAppointment = { id: currentAppointments.length + 1, date, time, department };
-            currentAppointments.push(newAppointment);
-            showCurrentAppointments();
-            alert(`Appointment scheduled for ${date} at ${time} in ${department}`);
+        function rescheduleAppointment() {
+            const id = document.getElementById('appointmentIdToReschedule').value;
+            const date = document.getElementById('rescheduleDate').value;
+            const time = document.getElementById('rescheduleTime').value;
+            const department = document.getElementById('rescheduleDepartment').value;
+
+            const appointmentIndex = currentAppointments.findIndex(app => app.id === parseInt(id));
+            if (appointmentIndex !== -1) {
+                currentAppointments[appointmentIndex] = { id: parseInt(id), date, time, department };
+                showCurrentAppointments();
+                alert(`Appointment rescheduled to ${date} at ${time} in ${department}`);
+                document.getElementById('rescheduleForm').reset();
+                document.getElementById('rescheduleForm').style.display = 'none';
+            }
         }
 
         function cancelAppointment(id) {
@@ -95,7 +116,7 @@
         }
 
         function loadAvailableTimes() {
-            const timeSelect = document.getElementById('appointmentTime');
+            const timeSelect = document.getElementById('rescheduleTime');
             availableTimes.forEach(time => {
                 const option = document.createElement('option');
                 option.value = time;
@@ -105,7 +126,7 @@
         }
 
         function loadDepartments() {
-            const departmentSelect = document.getElementById('appointmentDepartment');
+            const departmentSelect = document.getElementById('rescheduleDepartment');
             departments.forEach(department => {
                 const option = document.createElement('option');
                 option.value = department;
@@ -152,22 +173,25 @@
             <div id="appointmentList" class="appointment-list"></div>
         </div>
 
-        <!-- Schedule New Appointment -->
-        <div class="appointment-container mt-4">
-            <h3>Schedule New Appointment</h3>
+        <!-- Reschedule Appointment Form -->
+        <div id="rescheduleForm" class="appointment-container appointment-form mt-4">
+            <h3>Reschedule Appointment</h3>
             <form>
-                <label for="appointmentDate" class="form-label">Choose a Date</label>
-                <input type="date" id="appointmentDate" class="form-control mb-3">
+                <input type="hidden" id="appointmentIdToReschedule">
+                
+                <label for="rescheduleDate" class="form-label">Choose a New Date</label>
+                <input type="date" id="rescheduleDate" class="form-control mb-3">
 
-                <label for="appointmentTime" class="form-label">Choose a Time</label>
-                <select id="appointmentTime" class="form-control mb-3"></select>
+                <label for="rescheduleTime" class="form-label">Choose a New Time</label>
+                <select id="rescheduleTime" class="form-control mb-3"></select>
 
-                <label for="appointmentDepartment" class="form-label">Choose a Department</label>
-                <select id="appointmentDepartment" class="form-control mb-3"></select>
+                <label for="rescheduleDepartment" class="form-label">Choose a New Department</label>
+                <select id="rescheduleDepartment" class="form-control mb-3"></select>
 
-                <button type="button" class="btn btn-primary" onclick="scheduleAppointment()">Confirm Appointment</button>
+                <button type="button" class="btn btn-primary" onclick="rescheduleAppointment()">Confirm Reschedule</button>
             </form>
         </div>
+
     </div>
 
     <!-- Bootstrap JS -->
