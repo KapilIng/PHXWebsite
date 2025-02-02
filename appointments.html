@@ -58,7 +58,6 @@
             "Cardiology": ["Dr. Scott S. Williams"],
             "Orthopedics": ["Dr. Mary K. Allare", "Dr. Paul H. Allen"],
             "Gastroenterology": ["Dr. Thomas L. Johnson", "Dr. Emily A. Garrison", "Dr. Joshua Carroll"],
-            // Add more departments and doctors as needed
         };
 
         const availableTimes = {
@@ -71,8 +70,9 @@
             "Dr. Thomas L. Johnson": ["10:00 AM", "2:00 PM", "4:00 PM"],
             "Dr. Emily A. Garrison": ["9:00 AM", "1:00 PM", "3:00 PM"],
             "Dr. Joshua Carroll": ["11:00 AM", "1:00 PM", "3:00 PM"],
-            // Add more doctors and their available times as needed
         };
+
+        let appointments = [];
 
         function loadDepartments() {
             const departmentSelect = document.getElementById('department');
@@ -88,7 +88,7 @@
             const departmentSelect = document.getElementById('department');
             const doctorSelect = document.getElementById('doctor');
             const selectedDepartment = departmentSelect.value;
-            doctorSelect.innerHTML = '<option value="">Select a Doctor</option>'; // Reset doctor options
+            doctorSelect.innerHTML = '<option value="">Select a Doctor</option>';
             if (selectedDepartment) {
                 departments[selectedDepartment].forEach(doctor => {
                     const option = document.createElement('option');
@@ -103,7 +103,7 @@
             const doctorSelect = document.getElementById('doctor');
             const timeSelect = document.getElementById('time');
             const selectedDoctor = doctorSelect.value;
-            timeSelect.innerHTML = '<option value="">Select a Time</option>'; // Reset time options
+            timeSelect.innerHTML = '<option value="">Select a Time</option>';
             if (selectedDoctor) {
                 availableTimes[selectedDoctor].forEach(time => {
                     const option = document.createElement('option');
@@ -119,17 +119,63 @@
             const doctor = document.getElementById('doctor').value;
             const time = document.getElementById('time').value;
             if (department && doctor && time) {
+                const appointment = { department, doctor, time };
+                appointments.push(appointment);
                 alert(`Appointment scheduled with Dr. ${doctor} in ${department} at ${time}`);
-                // Add the appointment to the upcoming appointments list
-                // For demonstration purposes, we'll just log it to the console
-                console.log(`Scheduled Appointment: ${department} - Dr. ${doctor} at ${time}`);
+                displayAppointments();
+                clearForm();
             } else {
                 alert('Please select all fields to schedule an appointment.');
             }
         }
 
+        function rescheduleAppointment(index) {
+            const department = prompt("Enter new department", appointments[index].department);
+            const doctor = prompt("Enter new doctor", appointments[index].doctor);
+            const time = prompt("Enter new time", appointments[index].time);
+            if (department && doctor && time) {
+                appointments[index] = { department, doctor, time };
+                alert("Appointment rescheduled!");
+                displayAppointments();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function cancelAppointment(index) {
+            if (confirm("Are you sure you want to cancel this appointment?")) {
+                appointments.splice(index, 1);
+                alert('Appointment canceled!');
+                displayAppointments();
+            }
+        }
+
+        function displayAppointments() {
+            const appointmentList = document.getElementById('appointmentList');
+            appointmentList.innerHTML = '';
+            appointments.forEach((appointment, index) => {
+                const appointmentDiv = document.createElement('div');
+                appointmentDiv.classList.add('appointment-item');
+                appointmentDiv.innerHTML = `
+                    <p>Department: ${appointment.department}</p>
+                    <p>Doctor: ${appointment.doctor}</p>
+                    <p>Time: ${appointment.time}</p>
+                    <button class="btn btn-warning" onclick="rescheduleAppointment(${index})">Reschedule</button>
+                    <button class="btn btn-danger" onclick="cancelAppointment(${index})">Cancel</button>
+                `;
+                appointmentList.appendChild(appointmentDiv);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('department').value = '';
+            document.getElementById('doctor').value = '';
+            document.getElementById('time').value = '';
+        }
+
         window.onload = function() {
             loadDepartments();
+            displayAppointments();
         };
     </script>
 </head>
@@ -181,6 +227,12 @@
             </div>
             <button type="button" class="btn btn-primary" onclick="scheduleAppointment()">Schedule Appointment</button>
         </form>
+
+        <!-- Appointment List -->
+        <div class="appointment-list mt-5">
+            <h3>Upcoming Appointments</h3>
+            <div id="appointmentList"></div>
+        </div>
     </div>
 
 </body>
